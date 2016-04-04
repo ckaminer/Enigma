@@ -7,11 +7,11 @@ class Generator
   end
 
   def key
-    @key = rand(99999).to_s.rjust(5, "00000")
+    @key || @key = rand(99999).to_s.rjust(5, "00000")
   end
 
   def date
-    @date = Time.now.strftime("%d%m%y")
+    @date || @date = Time.now.strftime("%d%m%y")
   end
 
 end

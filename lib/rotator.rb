@@ -1,4 +1,4 @@
-require "../classes/generator"
+require "../lib/generator"
 require 'pry'
 
 class Rotator

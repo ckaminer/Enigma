@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/pride'
-require_relative '../classes/cipher.rb'
+require_relative '../lib/cipher.rb'
 require 'pry'
 
 class CipherTest < Minitest::Test
