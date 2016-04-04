@@ -5,7 +5,7 @@ class Cipher
 
   attr_reader :rotated_pairs, :rotation_array
 
-  def initialize(key = nil, date = nil, direction = "+")
+  def initialize(key = nil, date = nil, direction = (1))
     @key = key
     @date = date
     @direction = direction
@@ -14,8 +14,12 @@ class Cipher
     @rotators = Rotator.new(@key, @date)
   end
 
+  def input_sanitizer(input)
+    input.to_s
+  end
+
   def split_string(string)
-    string.split("").each_slice(4) do |piece|
+    input_sanitizer(string).split("").each_slice(4) do |piece|
       @rotation_array << piece
     end
     @rotation_array
@@ -27,23 +31,28 @@ class Cipher
     @rotated_pairs = Hash[characters.zip(rotated_characters)]
   end
 
+  def rotate_A
+    rotate_characters(@rotators.rotator_A)
+  end
+
   def map_rotated_characters
     encrypted_array = []
     @rotation_array.each do |chunk|
-      rotate_characters(@rotators.rotator_A)
+      rotate_characters(@direction * @rotators.rotator_A)
       encrypted_array << @rotated_pairs[chunk[0]]
-      rotate_characters(@rotators.rotator_B)
+      #binding.pry
+      rotate_characters(@direction * @rotators.rotator_B)
       encrypted_array << @rotated_pairs[chunk[1]]
-      rotate_characters(@rotators.rotator_C)
+      rotate_characters(@direction * @rotators.rotator_C)
       encrypted_array << @rotated_pairs[chunk[2]]
-      rotate_characters(@rotators.rotator_D)
-      encrypted_array<< @rotated_pairs[chunk[3]]
+      rotate_characters(@direction * @rotators.rotator_D)
+      encrypted_array << @rotated_pairs[chunk[3]]
     end
     puts encrypted_array.flatten.join
   end
 
 end
 
-c = Cipher.new
-c.split_string("hello")
-c.map_rotated_characters
+# c = Cipher.new(82254)
+# c.split_string("l3 4s")
+# c.map_rotated_characters

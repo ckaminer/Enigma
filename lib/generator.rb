@@ -7,7 +7,7 @@ class Generator
   end
 
   def key
-    @key || @key = rand(99999).to_s.rjust(5, "00000")
+    @key.to_s || @key = rand(99999).to_s.rjust(5, "00000")
   end
 
   def date
