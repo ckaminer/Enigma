@@ -11,10 +11,12 @@ class Cipher
     @direction = direction
     @rotated_pairs
     @rotation_array = []
+    @encrypted_array = []
     @rotators = Rotator.new(@key, @date)
   end
 
   def input_sanitizer(input)
+    # kind of excessive -- preemptive
     input.to_s
   end
 
@@ -26,33 +28,37 @@ class Cipher
   end
 
   def rotate_characters(rotation)
-    characters = ("a".."z").to_a + ("0".."9").to_a + (" .,").chars
-    rotated_characters = characters.rotate(rotation)
-    @rotated_pairs = Hash[characters.zip(rotated_characters)]
+    rotated_characters = character_map.rotate(rotation)
+    @rotated_pairs = Hash[character_map.zip(rotated_characters)]
   end
 
-  def rotate_A
-    rotate_characters(@rotators.rotator_A)
-  end
+  # def rotate_A
+  #   rotate_characters(@rotators.rotator_A)
+  # end
 
   def map_rotated_characters
-    encrypted_array = []
+
     @rotation_array.each do |chunk|
       rotate_characters(@direction * @rotators.rotator_A)
-      encrypted_array << @rotated_pairs[chunk[0]]
-      #binding.pry
+      @encrypted_array << @rotated_pairs[chunk[0]]
       rotate_characters(@direction * @rotators.rotator_B)
-      encrypted_array << @rotated_pairs[chunk[1]]
+      @encrypted_array << @rotated_pairs[chunk[1]]
       rotate_characters(@direction * @rotators.rotator_C)
-      encrypted_array << @rotated_pairs[chunk[2]]
+      @encrypted_array << @rotated_pairs[chunk[2]]
       rotate_characters(@direction * @rotators.rotator_D)
-      encrypted_array << @rotated_pairs[chunk[3]]
+      @encrypted_array << @rotated_pairs[chunk[3]]
     end
-    puts encrypted_array.flatten.join
+    puts @encrypted_array.flatten.join
+  end
+
+  private
+
+  def character_map
+    ("a".."z").to_a + ("0".."9").to_a + (" .,").chars
   end
 
 end
 
 # c = Cipher.new(82254)
-# c.split_string("l3 4s")
+# c.split_string("o0c6v")
 # c.map_rotated_characters
