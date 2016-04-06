@@ -1,11 +1,9 @@
 require 'minitest/autorun'
 require 'minitest/pride'
-require './lib/decrypt.rb'
+require './lib/crack.rb'
 require 'pry'
 
-class DecryptTest < Minitest::Test
-
-
+class CrackTest < Minitest::Test
 
 
 end

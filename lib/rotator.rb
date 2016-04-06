@@ -1,4 +1,4 @@
-require "./lib/generator"
+require './lib/generator'
 require 'pry'
 
 class Rotator
@@ -12,19 +12,27 @@ class Rotator
   end
 
   def rotator_A
-    key[0..1].to_i + offset[0].to_i
+    key.to_s[0..1].to_i + offset[0].to_i
   end
 
   def rotator_B
-    key[1..2].to_i + offset[1].to_i
+    key.to_s[1..2].to_i + offset[1].to_i
   end
 
   def rotator_C
-    key[2..3].to_i + offset[2].to_i
+    key.to_s[2..3].to_i + offset[2].to_i
   end
 
   def rotator_D
-    key[3..4].to_i + offset[3].to_i
+    key.to_s[3..4].to_i + offset[3].to_i
+  end
+
+  def rotator_E
+    key.to_s[4..5].to_i + offset[4].to_i
+  end
+
+  def rotator_F
+    key.to_s[5..6].to_i + offset[5].to_i
   end
 
 end

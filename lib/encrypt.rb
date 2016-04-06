@@ -3,15 +3,15 @@ require 'pry'
 
 class Encrypt
   # attrs
-  def initialize(key = nil, date = nil, direction = (1))
+  def initialize(key = nil, date = nil)
     @key = key
     @date = date
-    @direction = direction
+    @direction = 1
   end
 
-  def input_sanitizer(message)
-    message.to_s
-  end
+  # def input_sanitizer(message)
+  #   message.to_s
+  # end
 
   def encrypt(message)
     cipher = Cipher.new(@key, @date, @direction)
@@ -22,9 +22,13 @@ class Encrypt
 
 end
 
-# if __FILE__ == $0
-#   puts "CHARLIE"
-# end
-#ruby ./lib/encrypt.rb message.txt encrypted.txt
-# ARGV[0] = message.txt
-# ARGV[1] = encrypted.txt
+
+if __FILE__ == $0
+  message = File.read(ARGV[0])
+  key = ARGV[2]
+  date = ARGV[3]
+  encrypted_message = Encrypt.new(key, date).encrypt(message.chomp)
+
+  File.write(ARGV[1], encrypted_message)
+  puts "Created #{ARGV[1]} with the key #{ARGV[2]} and date #{ARGV[3]}"
+end

@@ -1,9 +1,9 @@
-require_relative '../lib/rotator'
+require './lib/rotator'
 require 'pry'
 
 class Cipher
 
-  attr_reader :rotated_pairs, :rotation_array
+  attr_reader :rotated_pairs, :rotation_array, :rotators, :encrypted_array
 
   def initialize(key = nil, date = nil, direction = (1))
     @key = key
@@ -21,7 +21,7 @@ class Cipher
   end
 
   def split_string(string)
-    input_sanitizer(string).split("").each_slice(4) do |piece|
+    string.to_s.split("").each_slice(6) do |piece|
       @rotation_array << piece
     end
     @rotation_array
@@ -32,12 +32,7 @@ class Cipher
     @rotated_pairs = Hash[character_map.zip(rotated_characters)]
   end
 
-  # def rotate_A
-  #   rotate_characters(@rotators.rotator_A)
-  # end
-
   def map_rotated_characters
-
     @rotation_array.each do |chunk|
       rotate_characters(@direction * @rotators.rotator_A)
       @encrypted_array << @rotated_pairs[chunk[0]]
@@ -47,18 +42,18 @@ class Cipher
       @encrypted_array << @rotated_pairs[chunk[2]]
       rotate_characters(@direction * @rotators.rotator_D)
       @encrypted_array << @rotated_pairs[chunk[3]]
+      rotate_characters(@direction * @rotators.rotator_E)
+      @encrypted_array << @rotated_pairs[chunk[4]]
+      rotate_characters(@direction * @rotators.rotator_F)
+      @encrypted_array << @rotated_pairs[chunk[5]]
     end
-    puts @encrypted_array.flatten.join
+    @encrypted_array.flatten.join
   end
 
   private
 
-  def character_map
-    ("a".."z").to_a + ("0".."9").to_a + (" .,").chars
-  end
+    def character_map
+      ("a".."z").to_a + ("0".."9").to_a + ("A".."Z").to_a + (" .,!@#$%^&*()[]<>;:/?\|").chars
+    end
 
 end
-
-# c = Cipher.new(82254)
-# c.split_string("o0c6v")
-# c.map_rotated_characters

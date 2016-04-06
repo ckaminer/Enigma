@@ -10,7 +10,7 @@ class Generator
   end
 
   def set_key
-    key.to_s ||= rand(99999).to_s.rjust(5, "00000")
+    @key ||= rand(9999999).to_s.rjust(7, "0000000")
   end
 
   def set_date
@@ -19,7 +19,7 @@ class Generator
 
   def set_offset
     date_squared = (set_date.to_i ** 2).to_s
-    offset = date_squared[-4..-1]
+    offset = date_squared[-6..-1]
   end
 
 end
