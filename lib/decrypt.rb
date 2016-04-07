@@ -2,7 +2,8 @@ require './lib/cipher'
 
 class Decrypt
 
-  attr_reader :key, :date, :cipher
+  attr_reader :date, :cipher
+  attr_accessor :key
 
   def initialize(key = nil, date = nil)
     @key = key

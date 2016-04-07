@@ -9,6 +9,9 @@ class Crack
     @decryptor = Decrypt.new
     @end_of_message = "..end.."
     @message = message
+    @rotated_pairs
+    @rotation_array = []
+    @encrypted_array = []
   end
 
   def find_message_length
@@ -68,6 +71,29 @@ class Crack
     @rotations
   end
 
+  def rotate_characters(rotation)
+    rotated_characters = character_map.rotate(rotation)
+    @rotated_pairs = Hash[character_map.zip(rotated_characters)]
+  end
+
+  def split_string
+    @message.to_s.split("").each_slice(4) do |piece|
+      @rotation_array << piece
+    end
+    @rotation_array
+  end
+
+  def map_rotated_characters
+    #require 'pry'; binding.pry
+    #chop_characters_from_encrypted_message.chars.each do |chunk|
+      chop_characters_from_encrypted_message.chars.each do |letter|
+        index = chop_characters_from_encrypted_message.chars.index(letter)
+        rotate_characters(-1 * @rotations[index].to_i)
+        @encrypted_array << @rotated_pairs[letter]
+      end
+    @encrypted_array.flatten.join
+  end
+
   def crack
     message = @message
     calculate_character_rotations
@@ -79,15 +105,17 @@ class Crack
    ("a".."z").to_a + ("0".."9").to_a + ("A".."Z").to_a + (" .,!@#$%^&*()[]<>;:/?|").chars
   end
 
-  def crack_key(message)
-    i = 0
-    with_leading_zeros = i.to_s.rjust(5, "00000")
-      until @decryptor(with_leading_zeros).decrypt(message[-7..1]) == @end_of_message
-        with_leading_zeros == @decryptor.key
-        i += 1
-      end
-    with_leading_zeros
-  end
+  # def crack_key(message)
+  #   i = 0
+  #   #require 'pry',binding.pry
+  #   with_leading_zeros = i.to_s.rjust(5, "00000")
+  #     until @decryptor.decrypt(message[-7..1]) == @end_of_message
+  #       @decryptor.key = with_leading_zeros
+  #       with_leading_zeros == @decryptor.key
+  #       i += 1
+  #     end
+  #   with_leading_zeros
+  # end
 
 #01W%<3R4>1QS>>
 
