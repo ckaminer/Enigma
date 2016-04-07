@@ -1,7 +1,6 @@
 require './lib/cipher'
-require 'pry'
 
-class Decrypt #< Crypt
+class Decrypt
 
   attr_reader :key, :date, :cipher
 

@@ -1,33 +1,29 @@
 require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/cipher.rb'
-require 'pry'
 
 class CipherTest < Minitest::Test
 
   def test_rotators_are_pulled_in_properly
-    c = Cipher.new("1234567", "030416")
+    c = Cipher.new("12345", "030416")
     rotator_A = c.rotators.create_rotator_array[0]
     rotator_B = c.rotators.create_rotator_array[1]
     rotator_C = c.rotators.create_rotator_array[2]
     rotator_D = c.rotators.create_rotator_array[3]
-    rotator_E = c.rotators.create_rotator_array[4]
-    rotator_F = c.rotators.create_rotator_array[5]
 
     assert_equal Rotator, c.rotators.class
-    assert_equal 13, rotator_A
-    assert_equal 26, rotator_B
-    assert_equal 37, rotator_C
-    assert_equal 45, rotator_D
-    assert_equal 61, rotator_E
-    assert_equal 73, rotator_F
+    assert_equal 15, rotator_A
+    assert_equal 23, rotator_B
+    assert_equal 39, rotator_C
+    assert_equal 51, rotator_D
+
   end
 
-  def test_split_string_returns_array_of_six_character_pieces
+  def test_split_string_returns_array_of_four_character_pieces
     c = Cipher.new
     c.split_string("hello world")
 
-    result = [["h", "e", "l", "l", "o", " "], ["w", "o", "r", "l", "d"]]
+    result = [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]]
     assert_equal c.rotation_array, result
   end
 
@@ -59,10 +55,10 @@ class CipherTest < Minitest::Test
     c = Cipher.new("1234567", "040416", 1)
     c.split_string("hello world")
 
-    assert_equal "x6MM[PCGSU,", c.map_rotated_characters
+    assert_equal "w1OO3bZ368G", c.map_rotated_characters
 
     d = Cipher.new("1234567", "040416", -1)
-    d.split_string("x6MM[PCGSU,")
+    d.split_string("w1OO3bZ368G")
 
     assert_equal "hello world", d.map_rotated_characters
   end

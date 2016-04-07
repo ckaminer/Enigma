@@ -1,5 +1,4 @@
-require_relative '../lib/cipher'
-require 'pry'
+require './lib/cipher'
 
 class Encrypt
 
@@ -26,7 +25,6 @@ if __FILE__ == $0
   key = encryptor.cipher.rotators.generator.key
   date = encryptor.cipher.rotators.generator.date
   encrypted_message = encryptor.encrypt(message.chomp)
-  #binding.pry
   File.write(ARGV[1], encrypted_message)
   puts "Created #{ARGV[1]} with the key #{key} and date #{date}"
 end

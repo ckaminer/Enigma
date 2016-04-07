@@ -1,7 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/decrypt.rb'
-require 'pry'
 
 class DecryptTest < Minitest::Test
 
@@ -11,13 +10,13 @@ class DecryptTest < Minitest::Test
   end
 
   def test_manual_key_used_in_cipher
-    d = Decrypt.new(1234567)
+    d = Decrypt.new(12345)
 
-    assert_equal 1234567, d.cipher.key
+    assert_equal 12345, d.cipher.key
   end
 
   def test_manual_date_used_in_cipher
-    d = Decrypt.new(1234567, "030416")
+    d = Decrypt.new(12345, "030416")
 
     assert_equal "030416", d.cipher.date
   end
@@ -37,7 +36,7 @@ class DecryptTest < Minitest::Test
   end
 
   def test_decrypt_returns_decrypted_message
-    d = Decrypt.new("1234567", "030416")
+    d = Decrypt.new("12345", "030416")
     result = d.decrypt("y4U.D;1e1Tenr0I")
 
     assert_equal "lets go ok yeah", result
