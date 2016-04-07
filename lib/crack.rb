@@ -11,11 +11,7 @@ class Crack
     @modulo_hash = {0 => "A", 1 => "B", 2 => "C", 3 => "D"}
     @charcater_hash = {}
     #@cipher = Cipher.new(@key, @date)
-    @rotator = Rotator.new(@key, @date, @rotator_A, @rotator_B, @rotator_C, @rotator_D)
-    @rotator_A
-    @rotator_B
-    @rotator_C
-    @rotator_D
+    @rotator = Rotator.new(@key, @date)
   end
 
   def find_message_length(message)
@@ -143,7 +139,7 @@ class Crack
 # y5bq3ugprbpqvvcm40cg
 
   def character_map
-    ("a".."z").to_a + ("0".."9").to_a + (" .,").chars
+    ("a".."z").to_a + ("0".."9").to_a + ("A".."Z").to_a + (" .,!@#$%^&*()[]<>;:/?\|").chars
   end
 
 end

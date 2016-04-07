@@ -3,21 +3,19 @@ require 'pry'
 
 class Decrypt #< Crypt
 
+  attr_reader :key, :date, :cipher
+
   def initialize(key = nil, date = nil)
     @key = key
     @date = date
     @direction = -1
-  end
-
-  def input_sanitizer(message)
-    message.to_s
+    @cipher = Cipher.new(@key, @date, @direction)
   end
 
   def decrypt(message)
-    cipher = Cipher.new(@key, @date, @direction)
-    formatted_input = input_sanitizer(message)
-    cipher.split_string(formatted_input)
-    cipher.map_rotated_characters
+    formatted_input = message.to_s
+    @cipher.split_string(formatted_input)
+    @cipher.map_rotated_characters
   end
 
 end

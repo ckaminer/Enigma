@@ -2,33 +2,31 @@ require_relative '../lib/cipher'
 require 'pry'
 
 class Encrypt
-  # attrs
+
+  attr_reader :key, :date, :cipher
+
   def initialize(key = nil, date = nil)
     @key = key
     @date = date
     @direction = 1
+    @cipher = Cipher.new(@key, @date, @direction)
   end
 
-  # def input_sanitizer(message)
-  #   message.to_s
-  # end
-
   def encrypt(message)
-    cipher = Cipher.new(@key, @date, @direction)
-    formatted_input = input_sanitizer(message)
-    cipher.split_string(formatted_input)
-    cipher.map_rotated_characters
+    formatted_input = message.to_s
+    @cipher.split_string(formatted_input)
+    @cipher.map_rotated_characters
   end
 
 end
 
-
 if __FILE__ == $0
   message = File.read(ARGV[0])
-  key = ARGV[2]
-  date = ARGV[3]
-  encrypted_message = Encrypt.new(key, date).encrypt(message.chomp)
-
+  encryptor = Encrypt.new
+  key = encryptor.cipher.rotators.generator.key
+  date = encryptor.cipher.rotators.generator.date
+  encrypted_message = encryptor.encrypt(message.chomp)
+  #binding.pry
   File.write(ARGV[1], encrypted_message)
-  puts "Created #{ARGV[1]} with the key #{ARGV[2]} and date #{ARGV[3]}"
+  puts "Created #{ARGV[1]} with the key #{key} and date #{date}"
 end
